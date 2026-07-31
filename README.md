@@ -1,6 +1,6 @@
 # SofiApp 🌟
 
-App de puntos para Sofia (4 años) — gana puntos por buen comportamiento y canjea beneficios divertidos.
+App de puntos para Sofia (niños 4+) — gana puntos por buen comportamiento y canjea beneficios divertidos.
 
 ## ✨ Características
 

@@ -6,7 +6,7 @@
 ---
 
 ## Roles
-- **Sofia** — niña de 4 años, usuario principal
+- **Sofia** — niño/a (4+), usuario principal
 - **Admin** — papá o mamá, gestionan puntos y beneficios
 
 ---
@@ -28,7 +28,7 @@
 ### HU-102: Login de Sofia (simple)
 **Como** Sofia,  
 **Quiero** entrar a mi app con un PIN de 4 dígitos o sin login,  
-**Para** no tener que escribir contraseña (tengo 4 años).
+**Para** no tener que escribir contraseña (soy pequeño/a).
 
 - **Criterios de aceptación:**
   - [ ] Si el dispositivo ya tiene sesión admin activa, Sofia entra directo
@@ -205,7 +205,7 @@
 
 ---
 
-## Épica 5: Experiencia de Sofia (UX 4 años)
+## Épica 5: Experiencia de Sofia (UX niños 4+)
 
 ### HU-501: Navegación simple
 **Como** Sofia,  

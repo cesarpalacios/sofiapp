@@ -3,7 +3,7 @@
 > Guía para agentes de IA que trabajen en SofiApp.
 
 ## Proyecto
-SofiApp es una PWA de puntos por comportamientos para una niña de 4 años. Los admins (papá/mamá) asignan puntos por buenas acciones y restan por pataletas. Sofia canjea puntos por beneficios.
+SofiApp es una PWA de puntos por comportamientos para niños (4+). Los admins (papá/mamá) asignan puntos por buenas acciones y restan por pataletas. Sofia canjea puntos por beneficios.
 
 ## Stack
 - **Frontend:** React 19 + Vite (PWA)
@@ -43,7 +43,7 @@ src/
 - **Nombres de componentes:** PascalCase (`PointCard`, `BenefitItem`)
 - **Hooks personalizados:** prefijo `use` (`useAuth`, `usePoints`)
 - **Comentarios y documentación:** en español
-- **UI:** botones grandes, emojis, colores vivos — está diseñado para una niña de 4 años
+- **UI:** botones grandes, emojis, colores vivos — está diseñado para niños (4+)
 
 ### Seguridad
 - NUNCA commitear `.env` o secrets
@@ -73,4 +73,4 @@ VITE_SUPABASE_ANON_KEY=eyJxxx
 - **PWA** instalable desde el navegador (no App Store)
 - **Offline-first** no es requerido en el MVP
 - **Tema:** morado/rosa/amarillo — alegre y divertido
-- **UX para 4 años:** iconos > texto, botones grandes, animaciones de celebración
+- **UX niños 4+:** iconos > texto, botones grandes, animaciones de celebración

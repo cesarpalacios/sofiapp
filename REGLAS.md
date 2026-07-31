@@ -13,7 +13,7 @@
 - Si copias y pegas más de 3 líneas, refactorizar.
 
 ### KISS (Keep It Simple, Stupid)
-- Esta app es para una niña de 4 años. La simplicidad es el feature principal.
+- Esta app es para niños (4+). La simplicidad es el feature principal.
 - Si una solución requiere más de 3 niveles de anidación, simplificar.
 - Menos archivos > más archivos. Pero no a costa de DRY.
 
@@ -136,7 +136,7 @@ function validatePoints(points) {
 ---
 
 ## Accesibilidad
-- Esta app es para una niña de 4 años — accesibilidad es CRÍTICA
+- Esta app es para niños (4+) — accesibilidad es CRÍTICA
 - Botones mínimo 48x48px (recomendado 64x64px para dedos pequeños)
 - Contraste de colores WCAG AA mínimo
 - Texto grande (mínimo 16px, preferible 20px+ en elementos clave)

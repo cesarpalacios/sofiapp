@@ -14,7 +14,7 @@ Una app sencilla y motivadora donde Sofia acumule puntos por sus comportamientos
 |-----|-------|----------|
 | **Admin** | Cesar (papá) | Crea categorías, asigna puntos, aprueba canjes, configura beneficios |
 | **Admin** | Mamá | Mismas funciones que papá — ambos gestionan |
-| **Usuario** | Sofia (4 años) | Ve sus puntos, elige beneficios, hace seguimiento |
+| **Usuario** | Sofia (niños 4+) | Ve sus puntos, elige beneficios, hace seguimiento |
 
 > Papá y mamá tienen el mismo rol admin. Ambos pueden asignar puntos y aprobar canjes.
 
@@ -103,7 +103,7 @@ Sistema de niveles para mantener motivación a largo plazo:
 | **DNS** | Subdominio | ej: `sofia.ceapalaciosal.it` |
 
 ### Por qué PWA y no nativa
-- Sofia tiene 4 años — no necesita descargar de App Store
+- Sofia es niña pequeña (4+) — no necesita descargar de App Store
 - Se instala como app en el teléfono de papá/mamá
 - Misma base de código para todos los dispositivos
 - Deploy instantáneo (cambias código, ya está vivo)
@@ -173,7 +173,7 @@ usuario_logros
 
 ## 7. Diseño / UX
 
-**Público principal:** Sofia, 4 años.
+**Público principal:** Niños 4+ (Sofia).
 
 ### Principios de diseño
 - **Ultra simple y visual** — Sofia todavía no lee fluido
@@ -228,7 +228,7 @@ usuario_logros
 
 ## Decisiones Resueltas
 
-- ✅ **Edad de Sofia:** 4 años — UX ultra simple, visual, botones grandes, poco texto
+- ✅ **Edad objetivo:** Niños 4+ — UX ultra simple, visual, botones grandes, poco texto
 - ✅ **Plataforma:** Web app (PWA) — montar en AWS con dominio de Cesar
 - ✅ **Puntos negativos:** Sí, moderados. Principal uso: restar por pataletas. No bajan de nivel. Filosofía: premiar > castigar
 - ✅ **Usuarios:** Papá (admin) + Mamá (admin) + Sofia (usuario)
