@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
 import IconPicker from '../components/ui/IconPicker'
+import CategoriaSelect from '../components/ui/CategoriaSelect'
 import { usePoints } from '../context/PointsContext'
 import { useComportamientos } from '../context/ComportamientosContext'
 import { ICONOS_COMPORTAMIENTO } from '../lib/iconos'
@@ -11,14 +12,21 @@ const CAMPOS_INICIALES = { nombre: '', categoria: '', puntos: '', icono: '' }
 export default function Admin() {
   const [categoria, setCategoria] = useState('all')
   const { historial, canjesPendientes, asignarPuntos, aprobarCanje, rechazarCanje } = usePoints()
-  const { comportamientos, agregarComportamiento, editarComportamiento, toggleActivoComportamiento } =
-    useComportamientos()
+  const {
+    comportamientos,
+    categorias,
+    agregarCategoria,
+    eliminarCategoria,
+    agregarComportamiento,
+    editarComportamiento,
+    toggleActivoComportamiento,
+  } = useComportamientos()
 
   const [nuevo, setNuevo] = useState(CAMPOS_INICIALES)
   const [editandoId, setEditandoId] = useState(null)
   const [edicion, setEdicion] = useState(CAMPOS_INICIALES)
 
-  const categorias = ['all', ...new Set(comportamientos.map((c) => c.categoria))]
+  const categoriasFiltro = ['all', ...new Set(comportamientos.map((c) => c.categoria))]
   const filtrados = categoria === 'all' ? comportamientos : comportamientos.filter((c) => c.categoria === categoria)
 
   const handleAgregar = () => {
@@ -82,11 +90,12 @@ export default function Admin() {
           placeholder="Nombre del comportamiento"
           className="w-full px-3 py-2 rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:outline-none"
         />
-        <input
+        <CategoriaSelect
           value={nuevo.categoria}
-          onChange={(e) => setNuevo({ ...nuevo, categoria: e.target.value })}
-          placeholder="Categoría (ej: 📚 Estudios)"
-          className="w-full px-3 py-2 rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:outline-none"
+          onChange={(categoria) => setNuevo({ ...nuevo, categoria })}
+          categorias={categorias}
+          onAgregarCategoria={agregarCategoria}
+          onEliminarCategoria={eliminarCategoria}
         />
         <input
           type="number"
@@ -102,7 +111,7 @@ export default function Admin() {
 
       {/* Filtro de categoría */}
       <div className="flex gap-2 overflow-x-auto pb-2">
-        {categorias.map((cat) => (
+        {categoriasFiltro.map((cat) => (
           <button
             key={cat}
             onClick={() => setCategoria(cat)}
@@ -133,10 +142,12 @@ export default function Admin() {
                   onChange={(e) => setEdicion({ ...edicion, nombre: e.target.value })}
                   className="w-full px-3 py-2 rounded-xl border-2 border-gray-200"
                 />
-                <input
+                <CategoriaSelect
                   value={edicion.categoria}
-                  onChange={(e) => setEdicion({ ...edicion, categoria: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border-2 border-gray-200"
+                  onChange={(categoria) => setEdicion({ ...edicion, categoria })}
+                  categorias={categorias}
+                  onAgregarCategoria={agregarCategoria}
+                  permitirGestionar={false}
                 />
                 <input
                   type="number"
