@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
+import IconPicker from '../components/ui/IconPicker'
 import { useCatalogo } from '../context/CatalogoContext'
 import { useConfig } from '../context/ConfigContext'
+import { ICONOS_BENEFICIO } from '../lib/iconos'
 
 const CAMPOS_INICIALES = { nombre: '', costo: '', icono: '🎁' }
 
@@ -38,20 +40,17 @@ export default function AdminTienda() {
 
       <Card className="space-y-3">
         <h3 className="font-bold text-gray-700">➕ Nuevo beneficio</h3>
-        <div className="flex gap-2">
-          <input
-            value={nuevo.icono}
-            onChange={(e) => setNuevo({ ...nuevo, icono: e.target.value })}
-            className="w-16 px-2 py-2 rounded-xl border-2 border-gray-200 text-center text-2xl focus:border-purple-400 focus:outline-none"
-            maxLength={2}
-          />
-          <input
-            value={nuevo.nombre}
-            onChange={(e) => setNuevo({ ...nuevo, nombre: e.target.value })}
-            placeholder="Nombre del beneficio"
-            className="flex-1 px-3 py-2 rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:outline-none"
-          />
-        </div>
+        <IconPicker
+          value={nuevo.icono}
+          onChange={(icono) => setNuevo({ ...nuevo, icono })}
+          icons={ICONOS_BENEFICIO}
+        />
+        <input
+          value={nuevo.nombre}
+          onChange={(e) => setNuevo({ ...nuevo, nombre: e.target.value })}
+          placeholder="Nombre del beneficio"
+          className="w-full px-3 py-2 rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:outline-none"
+        />
         <input
           type="number"
           min="1"
@@ -70,19 +69,16 @@ export default function AdminTienda() {
           <Card key={b.id} className={!b.activo ? 'opacity-50' : ''}>
             {editandoId === b.id ? (
               <div className="space-y-2">
-                <div className="flex gap-2">
-                  <input
-                    value={edicion.icono}
-                    onChange={(e) => setEdicion({ ...edicion, icono: e.target.value })}
-                    className="w-16 px-2 py-2 rounded-xl border-2 border-gray-200 text-center text-2xl"
-                    maxLength={2}
-                  />
-                  <input
-                    value={edicion.nombre}
-                    onChange={(e) => setEdicion({ ...edicion, nombre: e.target.value })}
-                    className="flex-1 px-3 py-2 rounded-xl border-2 border-gray-200"
-                  />
-                </div>
+                <IconPicker
+                  value={edicion.icono}
+                  onChange={(icono) => setEdicion({ ...edicion, icono })}
+                  icons={ICONOS_BENEFICIO}
+                />
+                <input
+                  value={edicion.nombre}
+                  onChange={(e) => setEdicion({ ...edicion, nombre: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl border-2 border-gray-200"
+                />
                 <input
                   type="number"
                   min="1"
