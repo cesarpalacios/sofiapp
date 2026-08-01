@@ -52,14 +52,19 @@ El login es 100% local (sin backend): la primera vez que alguien entra como "Pap
 
 ## 🚀 Deploy (GitHub Pages)
 
-Cada push a `main` corre lint + tests + build y publica automáticamente en GitHub Pages ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)) — sin servidores ni costo.
+Cada push a `main` corre lint + tests + build y publica automáticamente en GitHub Pages ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)) — sin servidores ni costo, gratis para siempre en un repo público.
 
-**Configuración inicial (una sola vez, desde github.com):**
-1. Ve a **Settings → Pages** en el repo.
-2. En **Source**, elige **"GitHub Actions"** (no "Deploy from a branch").
-3. Haz push a `main` (o corre el workflow manualmente desde la pestaña **Actions**) — el sitio queda en `https://<tu-usuario>.github.io/sofiapp/`.
+### 🍴 ¿Quieres tu propia copia con tus propios datos? (fork)
 
-> El `base` de Vite ya está configurado como `/sofiapp/` para producción (ver `vite.config.js`) — si algún día cambias el nombre del repo, actualiza ese valor también.
+Como todos los datos (puntos, usuarios, PIN) viven en el `localStorage` del navegador, cada copia desplegada es 100% independiente — puedes tener la tuya sin tocar ni ver los datos de nadie más:
+
+1. Dale **"Fork"** arriba a la derecha de este repo (botón junto a "Star").
+2. En tu fork, ve a **Settings → Pages**.
+3. En **"Build and deployment" → Source**, elige **"GitHub Actions"** (no "Deploy from a branch").
+4. Ve a la pestaña **Actions** de tu fork → si no arrancó solo, dale clic en el workflow **"Deploy a GitHub Pages"** → **"Run workflow"**.
+5. En 1-2 minutos, tu copia queda viva en `https://<tu-usuario>.github.io/sofiapp/`.
+
+> ⚠️ Si le cambias el nombre a tu fork (distinto de `sofiapp`), edita `base` en [`vite.config.js`](vite.config.js) para que coincida con el nombre nuevo — si no, los estilos y assets no van a cargar.
 
 Para instalarla como app en el celular: abre esa URL en Chrome/Safari y usa "Agregar a pantalla de inicio" — no requiere Play Store ni App Store.
 

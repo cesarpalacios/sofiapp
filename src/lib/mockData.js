@@ -46,21 +46,60 @@ export const BENEFICIOS = [
 ]
 
 export const LOGROS = [
-  { id: 1, nombre: 'Primera vez', descripcion: 'Ganaste tus primeros puntos', icono: '🎉', desbloqueado: true },
-  { id: 2, nombre: 'Pequeña ayudante', descripcion: 'Ayudaste en casa 5 veces', icono: '🏠', desbloqueado: true },
-  { id: 3, nombre: 'Cepillón experto', descripcion: 'Te cepillaste los dientes 7 días', icono: '🦷', desbloqueado: true },
-  { id: 4, nombre: 'Una semana sin pataletas', descripcion: '7 días sin pataletas', icono: '🌈', desbloqueado: false },
-  { id: 5, nombre: 'Estudiosa', descripcion: 'Hiciste tarea 10 veces', icono: '📚', desbloqueado: false },
-  { id: 6, nombre: 'Generosa', descripcion: 'Compartiste 5 veces', icono: '🤝', desbloqueado: false },
+  {
+    id: 1,
+    nombre: 'Primera vez',
+    descripcion: 'Ganaste tus primeros puntos',
+    icono: '🎉',
+    condicion: { tipo: 'primera_vez' },
+  },
+  {
+    id: 2,
+    nombre: 'Pequeña ayudante',
+    descripcion: 'Ayudaste en casa 5 veces',
+    icono: '🏠',
+    condicion: { tipo: 'contar', comportamiento: 'Ayudar en casa', meta: 5 },
+  },
+  {
+    id: 3,
+    nombre: 'Cepillón experto',
+    descripcion: 'Te cepillaste los dientes 7 días',
+    icono: '🦷',
+    condicion: { tipo: 'contar', comportamiento: 'Cepillarse dientes', meta: 7 },
+  },
+  {
+    id: 4,
+    nombre: 'Una semana sin pataletas',
+    descripcion: '7 días sin pataletas',
+    icono: '🌈',
+    condicion: { tipo: 'sin_comportamiento_dias', comportamiento: 'Pataleta', dias: 7 },
+  },
+  {
+    id: 5,
+    nombre: 'Estudiosa',
+    descripcion: 'Hiciste tarea 10 veces',
+    icono: '📚',
+    condicion: { tipo: 'contar', comportamiento: 'Hacer tarea', meta: 10 },
+  },
+  {
+    id: 6,
+    nombre: 'Generosa',
+    descripcion: 'Compartiste 5 veces',
+    icono: '🤝',
+    condicion: { tipo: 'contar', comportamiento: 'Compartir', meta: 5 },
+  },
 ]
 
+const DIA_MS = 1000 * 60 * 60 * 24
+const AHORA_DEMO = Date.now()
+
 export const TRANSACCIONES_RECIENTES = [
-  { id: 1, descripcion: 'Ordenar juguetes', puntos: 15, tipo: 'ganado', categoria: '🏠 Responsabilidades', fecha: 'Hoy' },
-  { id: 2, descripcion: 'Cepillarse dientes', puntos: 10, tipo: 'ganado', categoria: '💪 Hábitos saludables', fecha: 'Hoy' },
-  { id: 3, descripcion: 'Comer verduras', puntos: 15, tipo: 'ganado', categoria: '💪 Hábitos saludables', fecha: 'Ayer' },
-  { id: 4, descripcion: 'Ser amable', puntos: 15, tipo: 'ganado', categoria: '🎭 Comportamiento', fecha: 'Ayer' },
-  { id: 5, descripcion: 'Pataleta', puntos: -5, tipo: 'perdido', categoria: '⚠️ Negativos', fecha: 'Hace 2 días' },
-  { id: 6, descripcion: 'Película a elección', puntos: -50, tipo: 'canjeado', categoria: '🎁 Tienda', fecha: 'Hace 3 días' },
+  { id: AHORA_DEMO - 0.3 * DIA_MS, descripcion: 'Ordenar juguetes', puntos: 15, tipo: 'ganado', categoria: '🏠 Responsabilidades', fecha: 'Hoy' },
+  { id: AHORA_DEMO - 0.6 * DIA_MS, descripcion: 'Cepillarse dientes', puntos: 10, tipo: 'ganado', categoria: '💪 Hábitos saludables', fecha: 'Hoy' },
+  { id: AHORA_DEMO - 1 * DIA_MS, descripcion: 'Comer verduras', puntos: 15, tipo: 'ganado', categoria: '💪 Hábitos saludables', fecha: 'Ayer' },
+  { id: AHORA_DEMO - 1.5 * DIA_MS, descripcion: 'Ser amable', puntos: 15, tipo: 'ganado', categoria: '🎭 Comportamiento', fecha: 'Ayer' },
+  { id: AHORA_DEMO - 2 * DIA_MS, descripcion: 'Pataleta', puntos: -5, tipo: 'perdido', categoria: '⚠️ Negativos', fecha: 'Hace 2 días' },
+  { id: AHORA_DEMO - 3 * DIA_MS, descripcion: 'Película a elección', puntos: -50, tipo: 'canjeado', categoria: '🎁 Tienda', fecha: 'Hace 3 días' },
 ]
 
 export function getNivel(puntos) {

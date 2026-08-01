@@ -1,18 +1,23 @@
 import Card from '../components/ui/Card'
 import { LOGROS } from '../lib/mockData'
+import { usePoints } from '../context/PointsContext'
+import { estaDesbloqueado } from '../lib/logros'
 
 export default function Logros() {
+  const { historial } = usePoints()
+  const logros = LOGROS.map((l) => ({ ...l, desbloqueado: estaDesbloqueado(l.condicion, historial) }))
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 pb-28 space-y-4">
       <div className="text-center">
         <h2 className="text-2xl font-bold text-purple-600 mb-1">🏆 Mis Logros</h2>
         <p className="text-gray-500 font-bold">
-          {LOGROS.filter(l => l.desbloqueado).length} de {LOGROS.length} desbloqueados
+          {logros.filter((l) => l.desbloqueado).length} de {logros.length} desbloqueados
         </p>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        {LOGROS.map((logro) => (
+        {logros.map((logro) => (
           <Card
             key={logro.id}
             className={`text-center ${
