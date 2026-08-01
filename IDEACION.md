@@ -12,11 +12,12 @@ Una app sencilla y motivadora donde Sofia acumule puntos por sus comportamientos
 
 | Rol | Quién | Qué hace |
 |-----|-------|----------|
-| **Admin** | Cesar (papá) | Crea categorías, asigna puntos, aprueba canjes, configura beneficios |
-| **Admin** | Mamá | Mismas funciones que papá — ambos gestionan |
+| **Admin** | Papá, Mamá, o cualquier familiar (Abuelo, Abuela, Tío, Tía, Otro) | Crea categorías, asigna puntos, aprueba canjes, configura beneficios |
 | **Usuario** | Sofia (niños 4+) | Ve sus puntos, elige beneficios, hace seguimiento |
 
-> Papá y mamá tienen el mismo rol admin. Ambos pueden asignar puntos y aprobar canjes.
+> Todos los admins tienen el mismo rol — no hay jerarquía entre ellos. Cualquiera puede asignar
+> puntos, aprobar canjes, y agregar/editar/eliminar a otros admins desde ⚙️ Configuración. El
+> parentesco (Papá, Mamá, Abuela, etc.) es solo para identificar a cada quien, no cambia permisos.
 
 ## 3. Mecánica Central
 
@@ -97,7 +98,7 @@ Sistema de niveles para mantener motivación a largo plazo:
 |------|-----------|---------|
 | **Frontend** | React + Vite (PWA) | Web app instalable desde el navegador, no necesita stores |
 | **Backend** | Supabase | Auth + DB Postgres + Storage, sin mantener servidor |
-| **Auth** | Supabase Auth | Login simple, roles: admin (papá/mamá) / usuario (Sofia) |
+| **Auth** | Local (sin backend) | Usuario y contraseña para admin (papá/mamá); PIN de 4 dígitos para el niño/a |
 | **DB** | Postgres (Supabase) | Relacional, perfecto para transacciones de puntos |
 | **Hosting** | AWS (dominio de Cesar) | Usar dominio existente |
 | **DNS** | Subdominio | ej: `sofia.ceapalaciosal.it` |
@@ -231,7 +232,8 @@ usuario_logros
 - ✅ **Edad objetivo:** Niños 4+ — UX ultra simple, visual, botones grandes, poco texto
 - ✅ **Plataforma:** Web app (PWA) — montar en AWS con dominio de Cesar
 - ✅ **Puntos negativos:** Sí, moderados. Principal uso: restar por pataletas. No bajan de nivel. Filosofía: premiar > castigar
-- ✅ **Usuarios:** Papá (admin) + Mamá (admin) + Sofia (usuario)
+- ✅ **Usuarios:** cualquier número de admins de la familia (Papá, Mamá, Abuelos, Tíos...) + Sofia (usuario)
+- ✅ **Login:** el primer admin crea su usuario y contraseña; desde ⚙️ Configuración puede agregar, editar o eliminar otros admins de la familia (con su parentesco). El niño/a entra con un PIN de 4 dígitos, también configurable, y su nombre/avatar se personalizan desde el panel admin. Ver [ARQUITECTURA.md](ARQUITECTURA.md#autenticación)
 
 ---
 

@@ -31,12 +31,13 @@
 - **Tailwind CSS v4** para estilos (utility-first, sin CSS custom salvo excepciones)
 - **Sin state management library** — Context API + hooks suffice para esta escala
 
-### 2. Backend (Supabase)
-- **Auth:** email/password para admins, PIN simple para Sofia (sin contraseña compleja)
-- **Database:** Postgres gestionado por Supabase
+### 2. Backend (Supabase — futuro)
+- **Auth:** hoy es 100% local (ver sección Autenticación) — no depende de Supabase
+- **Database:** Postgres gestionado por Supabase, reservado para cuando se migre la persistencia de puntos/tienda más allá de `localStorage`
 - **Storage:** para avatars e imágenes de beneficios
-- **RLS (Row Level Security):** políticas por tabla para separar admin vs usuario
-- **Edge Functions:** solo si se necesita lógica en servidor (validaciones críticas, cálculos)
+- **RLS (Row Level Security):** políticas por tabla para separar admin vs usuario, a aplicar en la migración futura
+
+Ver [`supabase/schema.sql`](../supabase/schema.sql) — por ahora solo documenta el modelo de datos objetivo para esa migración.
 
 ### 3. Hosting
 - **AWS** (EC2, Amplify, o S3+CloudFront según preferencia)
@@ -65,16 +66,24 @@ sofiapp/
 │   │       └── AdminNav.jsx
 │   ├── pages/
 │   │   ├── Home.jsx        # Dashboard puntos (Sofia)
-│   │   ├── Tienda.jsx      # Catálogo beneficios (Sofia)
+│   │   ├── Tienda.jsx      # Catálogo beneficios, canjear (Sofia)
 │   │   ├── Logros.jsx      # Badges (Sofia)
-│   │   ├── Admin.jsx       # Panel admin
+│   │   ├── Admin.jsx       # Asignar puntos + aprobar canjes (admin)
+│   │   ├── AdminDashboard.jsx # Inicio de admin: stats y gráfica por categoría
+│   │   ├── AdminTienda.jsx # Gestión de catálogo — crear/editar/desactivar beneficios (admin)
+│   │   ├── AdminConfig.jsx # Estado de conexión a Supabase (admin)
 │   │   └── Login.jsx       # Login
 │   ├── lib/
-│   │   ├── supabase.js     # Cliente Supabase
+│   │   ├── supabase.js     # Cliente Supabase (reservado para uso futuro)
+│   │   ├── crypto.js       # Hash local (SubtleCrypto) para contraseña/PIN
+│   │   ├── auth.js         # Validaciones de usuario/contraseña/PIN
 │   │   └── utils.js        # Utilidades puras (formatPoints, calcLevel, etc.)
 │   ├── context/
-│   │   ├── AuthContext.jsx # Estado de autenticación
-│   │   └── PointsContext.jsx # Estado de puntos y transacciones
+│   │   ├── ConfigContext.jsx # Credenciales admin, PIN y perfil del niño/a
+│   │   ├── AuthContext.jsx # Sesión activa (login/logout)
+│   │   ├── PointsContext.jsx # Estado de puntos y transacciones
+│   │   ├── CatalogoContext.jsx # CRUD de beneficios de la tienda
+│   │   └── ComportamientosContext.jsx # CRUD de comportamientos (positivos y negativos)
 │   ├── hooks/
 │   │   ├── useAuth.js      # Hook de auth (wraps AuthContext)
 │   │   ├── usePoints.js    # Hook de puntos
@@ -85,6 +94,8 @@ sofiapp/
 │   │   └── global.css      # Estilos globales (animaciones, etc.)
 │   ├── App.jsx
 │   └── main.jsx
+├── supabase/
+│   └── schema.sql          # Reservado — modelo de datos para migración futura
 ├── .env.example
 ├── .env                    # NO commitear
 ├── .gitignore
@@ -217,29 +228,52 @@ function calcLevel(totalPoints) {
 
 ---
 
-## RLS Policies (Supabase)
+## Puntos de partida
 
-```sql
--- Usuarios: cada quien ve sus propios datos
-CREATE POLICY "users_self_select" ON usuarios
-  FOR SELECT USING (auth.uid() = id);
+Desde ⚙️ Configuración, el admin define `puntosIniciales` (`ConfigContext`, default `0`). Al guardar, `establecerPuntos()` (`PointsContext`) actualiza el saldo actual del niño/a de inmediato — registrando la diferencia como una transacción "Ajuste de puntos de partida" en el historial, para que las gráficas y totales del dashboard sigan cuadrando. El mismo valor también queda guardado como semilla de `total` para cuando la app se usa por primera vez en un dispositivo sin datos previos (`localStorage` no sincroniza entre dispositivos).
 
--- Admins ven todo
-CREATE POLICY "admins_all_usuarios" ON usuarios
-  FOR ALL USING (
-    EXISTS (SELECT 1 FROM usuarios WHERE id = auth.uid() AND rol = 'admin')
-  );
+---
 
--- Transacciones: Sofia solo lee las suyas
-CREATE POLICY "transacciones_self_select" ON transacciones
-  FOR SELECT USING (usuario_id = auth.uid());
+## Autenticación
 
--- Transacciones: solo admins insertan
-CREATE POLICY "transacciones_admin_insert" ON transacciones
-  FOR INSERT WITH CHECK (
-    EXISTS (SELECT 1 FROM usuarios WHERE id = auth.uid() AND rol = 'admin')
-  );
+100% local — vive en `localStorage` del navegador, sin backend. Las contraseñas y el PIN nunca se guardan en texto plano: se pasan por `hashTexto()` ([`src/lib/crypto.js`](../src/lib/crypto.js), SHA-256 vía Web Crypto) antes de guardarse o compararse.
+
+### Admin — varios usuarios de la familia
+`ConfigContext` guarda una **lista** `adminUsuarios` (no un solo usuario): cada admin es
+`{ id, username, hash, parentesco }`, con `parentesco` uno de `PARENTESCOS` en
+[`src/lib/auth.js`](../src/lib/auth.js) (Papá, Mamá, Abuelo, Abuela, Tío, Tía, Otro), que también
+determina el avatar (`avatarPorParentesco`).
+
 ```
+Primera vez → Login muestra "Crea tu acceso" (usuario + password + parentesco)
+  → crearCredencialesAdmin(usuario, password, parentesco) agrega el primer admin
+  → inicia sesión automáticamente
+
+Siguientes veces → Login pide usuario + contraseña → loginAdmin(usuario, password)
+  → busca coincidencia en adminUsuarios por username + hash
+
+Desde ⚙️ Configuración → "Usuarios de la familia":
+  - editarUsuarioAdmin(id, { username, password, parentesco }) — password vacío = no cambiarla
+  - eliminarUsuarioAdmin(id) — rechaza si solo queda un admin
+  - crearCredencialesAdmin(...) — agrega un familiar más (Tío, Abuela, etc.)
+
+Ya autenticado, un admin puede editar o eliminar la cuenta de OTRO admin sin pedirle su
+contraseña — la sesión activa ya es la autorización (como un panel de usuarios normal). La UI
+bloquea eliminar la propia cuenta mientras está en uso.
+```
+
+### Niño/a — PIN de 4 dígitos
+```
+Login → ingresa PIN → loginNino(pin)
+  → compara contra el hash guardado (o contra "0000" si nunca se ha configurado uno)
+
+Desde ⚙️ Configuración → cambiarPinNino(pinNuevo) actualiza el hash guardado
+```
+
+### Perfil del niño/a (nombre y avatar)
+El nombre y el emoji que se muestran en el botón de login ("Soy ___") y en el saludo del header se configuran desde ⚙️ Configuración (`actualizarPerfilNino`) y se guardan en `ConfigContext`. Por defecto: `Sofia` / 👧.
+
+> Nota de seguridad: el hash es una ofuscación básica para no exponer texto plano en `localStorage`, no un reemplazo de autenticación con backend — adecuado para un dispositivo familiar compartido, no para un producto multi-usuario expuesto a internet.
 
 ---
 

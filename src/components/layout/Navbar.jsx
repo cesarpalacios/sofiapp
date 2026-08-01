@@ -5,6 +5,7 @@ export default function Navbar({ currentPage, onNavigate, user }) {
         { id: 'admin', label: '➕ Puntos', icon: '➕' },
         { id: 'tienda', label: '🎁 Tienda', icon: '🎁' },
         { id: 'logros', label: '🏆 Logros', icon: '🏆' },
+        { id: 'config', label: '⚙️ Config', icon: '⚙️' },
       ]
     : [
         { id: 'home', label: '🏠 Inicio', icon: '🏠' },
@@ -19,7 +20,7 @@ export default function Navbar({ currentPage, onNavigate, user }) {
           <button
             key={item.id}
             onClick={() => onNavigate(item.id)}
-            className={`flex flex-col items-center gap-1 px-4 py-2 rounded-2xl transition-all min-w-[70px] ${
+            className={`flex flex-col items-center gap-1 px-2 sm:px-4 py-2 rounded-2xl transition-all min-w-[56px] ${
               currentPage === item.id
                 ? 'bg-purple-100 text-purple-700 scale-105'
                 : 'text-gray-500 hover:bg-purple-50'

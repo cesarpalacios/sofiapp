@@ -18,7 +18,7 @@ export default function Button({ children, onClick, variant = 'primary', size = 
   return (
     <button
       onClick={onClick}
-      className={`${variants[variant]} ${sizes[size]} font-bold transition-all active:scale-95 hover:scale-105 ${className}`}
+      className={`${variants[variant]} ${sizes[size]} font-bold transition-all active:scale-95 hover:scale-105 disabled:opacity-50 disabled:pointer-events-none disabled:hover:scale-100 ${className}`}
       {...props}
     >
       {children}

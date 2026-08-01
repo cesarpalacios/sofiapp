@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
-import { BENEFICIOS } from '../lib/mockData'
+import { usePoints } from '../context/PointsContext'
+import { useCatalogo } from '../context/CatalogoContext'
 
-export default function Tienda({ user }) {
+export default function Tienda() {
   const [selected, setSelected] = useState(null)
-  const puntos = user?.puntos_totales ?? 125
+  const [confirmado, setConfirmado] = useState(false)
+  const { total: puntos, solicitarCanje } = usePoints()
+  const { beneficios } = useCatalogo()
+  const beneficiosActivos = beneficios.filter((b) => b.activo)
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 pb-28 space-y-4">
@@ -15,14 +19,14 @@ export default function Tienda({ user }) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {BENEFICIOS.map((beneficio) => {
+        {beneficiosActivos.map((beneficio) => {
           const puedeComprar = puntos >= beneficio.costo
           return (
             <Card
               key={beneficio.id}
-              className={`text-center cursor-pointer transition-all hover:scale-105 ${
-                selected === beneficio.id ? 'ring-4 ring-purple-400' : ''
-              } ${!puedeComprar ? 'opacity-60' : ''}`}
+              className={`text-center transition-all ${
+                puedeComprar ? 'cursor-pointer hover:scale-105' : 'cursor-not-allowed'
+              } ${selected === beneficio.id ? 'ring-4 ring-purple-400' : ''} ${!puedeComprar ? 'opacity-60' : ''}`}
               onClick={() => puedeComprar && setSelected(beneficio.id)}
             >
               <div className="text-5xl mb-2">{beneficio.icono}</div>
@@ -47,10 +51,27 @@ export default function Tienda({ user }) {
               <Button variant="ghost" onClick={() => setSelected(null)}>
                 Cancelar
               </Button>
-              <Button variant="warning" onClick={() => { alert('¡Canje solicitado! Papá/Mamá lo aprobará 🎉'); setSelected(null) }}>
+              <Button
+                variant="warning"
+                onClick={() => {
+                  const beneficio = beneficiosActivos.find((b) => b.id === selected)
+                  solicitarCanje(beneficio)
+                  setSelected(null)
+                  setConfirmado(true)
+                  setTimeout(() => setConfirmado(false), 3000)
+                }}
+              >
                 ¡Sí, canjear! 🎉
               </Button>
             </div>
+          </Card>
+        </div>
+      )}
+
+      {confirmado && (
+        <div className="fixed bottom-20 left-0 right-0 px-4 z-40">
+          <Card className="bg-gradient-to-r from-green-400 to-emerald-400 text-white text-center max-w-2xl mx-auto">
+            <p className="text-lg font-bold">¡Canje solicitado! Papá/Mamá lo aprobará pronto 🎉</p>
           </Card>
         </div>
       )}

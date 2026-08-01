@@ -1,26 +1,29 @@
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
-import { getNivel, getProximoNivel, TRANSACCIONES_RECIENTES } from '../lib/mockData'
+import { getNivel, getProximoNivel, NIVEL_ESTILOS } from '../lib/mockData'
+import { usePoints } from '../context/PointsContext'
 
 export default function Home({ user, onNavigate }) {
-  const puntos = user?.puntos_totales ?? 125
+  const { total: puntos, historial } = usePoints()
   const nivel = getNivel(puntos)
   const proximoNivel = getProximoNivel(puntos)
-  const progreso = Math.min(100, ((puntos - nivel.min) / (nivel.max - nivel.min)) * 100)
+  const estilo = NIVEL_ESTILOS[nivel.color]
+  const esNivelMaximo = proximoNivel.id === nivel.id
+  const progreso = esNivelMaximo ? 100 : Math.min(100, ((puntos - nivel.min) / (nivel.max - nivel.min)) * 100)
   const puntosParaSubir = proximoNivel.min - puntos
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 pb-28 space-y-6">
       {/* Avatar + Puntos */}
-      <Card className="text-center bg-gradient-to-br from-purple-100 to-pink-100 border-purple-200">
+      <Card className={`text-center bg-gradient-to-br ${estilo.card}`}>
         <div className="text-7xl mb-2 animate-bounce-slow">{user?.avatar || '👧'}</div>
         <p className="text-lg text-gray-600 font-bold mb-1">Tus puntos</p>
-        <div className="text-6xl font-bold text-purple-600 text-shadow-fun mb-2">
+        <div className={`text-6xl font-bold ${estilo.texto} text-shadow-fun mb-2`}>
           {puntos} ⭐
         </div>
         <div className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-1 shadow-md">
           <span className="text-2xl">{nivel.emoji}</span>
-          <span className="font-bold text-purple-600">{nivel.nombre}</span>
+          <span className={`font-bold ${estilo.texto}`}>{nivel.nombre}</span>
         </div>
       </Card>
 
@@ -30,20 +33,22 @@ export default function Home({ user, onNavigate }) {
           <span className="text-sm font-bold text-gray-600">
             {nivel.emoji} {nivel.nombre}
           </span>
-          <span className="text-sm font-bold text-purple-500">
+          <span className={`text-sm font-bold ${estilo.texto}`}>
             {proximoNivel.emoji} {proximoNivel.nombre}
           </span>
         </div>
         <div className="bg-gray-200 rounded-full h-6 overflow-hidden shadow-inner">
           <div
-            className="bg-gradient-to-r from-purple-400 to-pink-400 h-full rounded-full transition-all duration-500 flex items-center justify-end pr-2"
+            className={`bg-gradient-to-r ${estilo.barra} h-full rounded-full transition-all duration-500 flex items-center justify-end pr-2`}
             style={{ width: `${progreso}%` }}
           >
             <span className="text-xs font-bold text-white">{Math.round(progreso)}%</span>
           </div>
         </div>
         <p className="text-center mt-2 text-sm text-gray-500 font-bold">
-          ¡Te faltan {puntosParaSubir} puntos para {proximoNivel.nombre}! {proximoNivel.emoji}
+          {esNivelMaximo
+            ? '¡Alcanzaste el nivel máximo! 🎉'
+            : `¡Te faltan ${puntosParaSubir} puntos para ${proximoNivel.nombre}! ${proximoNivel.emoji}`}
         </p>
       </Card>
 
@@ -61,7 +66,7 @@ export default function Home({ user, onNavigate }) {
       <Card>
         <h2 className="text-lg font-bold text-gray-700 mb-3">📋 Actividad Reciente</h2>
         <div className="space-y-2">
-          {TRANSACCIONES_RECIENTES.slice(0, 5).map((t) => (
+          {historial.slice(0, 5).map((t) => (
             <div
               key={t.id}
               className="flex items-center justify-between bg-white rounded-2xl px-4 py-2 shadow-sm"

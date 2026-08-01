@@ -1,0 +1,12 @@
+-- ============================================================
+-- SofiApp — Esquema reservado para Supabase
+-- ============================================================
+--
+-- El login (usuario/contraseña del admin y PIN del niño/a) y los datos
+-- de puntos/tienda viven hoy en localStorage del navegador — no requieren
+-- Supabase. Este archivo queda reservado para cuando decidas migrar esos
+-- datos a Postgres (persistencia real, multi-dispositivo).
+--
+-- El modelo de datos objetivo para esa migración futura ya está
+-- documentado en ARQUITECTURA.md (tablas transacciones, beneficios,
+-- canjes, logros, etc.).
