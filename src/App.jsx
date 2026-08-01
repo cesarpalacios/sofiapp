@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from './context/AuthContext'
+import { usePoints } from './context/PointsContext'
 import Header from './components/layout/Header'
 import Navbar from './components/layout/Navbar'
 import Login from './pages/Login'
@@ -21,6 +22,7 @@ const PAGE_TITLES = {
 
 export default function App() {
   const { user, logout, loading } = useAuth()
+  const { canjesPendientes } = usePoints()
   const [currentPage, setCurrentPage] = useState('home')
 
   if (loading) {
@@ -40,7 +42,7 @@ export default function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return esAdmin ? <AdminDashboard /> : <Home user={user} onNavigate={setCurrentPage} />
+        return esAdmin ? <AdminDashboard onNavigate={setCurrentPage} /> : <Home user={user} onNavigate={setCurrentPage} />
       case 'tienda':
         return esAdmin ? <AdminTienda /> : <Tienda />
       case 'logros':
@@ -50,7 +52,7 @@ export default function App() {
       case 'config':
         return esAdmin ? <AdminConfig /> : <Home user={user} onNavigate={setCurrentPage} />
       default:
-        return esAdmin ? <AdminDashboard /> : <Home user={user} onNavigate={setCurrentPage} />
+        return esAdmin ? <AdminDashboard onNavigate={setCurrentPage} /> : <Home user={user} onNavigate={setCurrentPage} />
     }
   }
 
@@ -68,6 +70,7 @@ export default function App() {
         currentPage={currentPage}
         onNavigate={setCurrentPage}
         user={user}
+        canjesPendientes={canjesPendientes.length}
       />
     </div>
   )

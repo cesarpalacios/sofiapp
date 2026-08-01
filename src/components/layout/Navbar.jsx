@@ -1,4 +1,4 @@
-export default function Navbar({ currentPage, onNavigate, user }) {
+export default function Navbar({ currentPage, onNavigate, user, canjesPendientes = 0 }) {
   const navItems = user?.rol === 'admin'
     ? [
         { id: 'home', label: '🏠 Inicio', icon: '🏠' },
@@ -20,13 +20,20 @@ export default function Navbar({ currentPage, onNavigate, user }) {
           <button
             key={item.id}
             onClick={() => onNavigate(item.id)}
-            className={`flex flex-col items-center gap-1 px-2 sm:px-4 py-2 rounded-2xl transition-all min-w-[56px] ${
+            className={`relative flex flex-col items-center gap-1 px-2 sm:px-4 py-2 rounded-2xl transition-all min-w-[56px] ${
               currentPage === item.id
                 ? 'bg-purple-100 text-purple-700 scale-105'
                 : 'text-gray-500 hover:bg-purple-50'
             }`}
           >
-            <span className="text-2xl">{item.icon}</span>
+            <span className="relative text-2xl">
+              {item.icon}
+              {item.id === 'admin' && canjesPendientes > 0 && (
+                <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[16px] h-4 flex items-center justify-center px-1">
+                  {canjesPendientes}
+                </span>
+              )}
+            </span>
             <span className="text-xs font-bold">{item.label.split(' ')[1]}</span>
           </button>
         ))}

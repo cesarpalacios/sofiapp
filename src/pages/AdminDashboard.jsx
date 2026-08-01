@@ -5,7 +5,7 @@ import { useConfig } from '../context/ConfigContext'
 import { getNivel } from '../lib/mockData'
 import { agruparPorCategoria, calcularTotales } from '../lib/stats'
 
-export default function AdminDashboard() {
+export default function AdminDashboard({ onNavigate }) {
   const { total, historial, canjesPendientes } = usePoints()
   const { beneficios } = useCatalogo()
   const { ninoPerfil } = useConfig()
@@ -29,11 +29,16 @@ export default function AdminDashboard() {
             {nivel.emoji} {nivel.nombre}
           </p>
         </Card>
-        <Card className="text-center bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
+        <Card
+          className={`text-center bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200 ${
+            canjesPendientes.length > 0 ? 'cursor-pointer hover:scale-105 transition-all' : ''
+          }`}
+          onClick={() => canjesPendientes.length > 0 && onNavigate?.('admin')}
+        >
           <p className="text-xs font-bold text-gray-500">Canjes pendientes</p>
           <p className="text-3xl font-bold text-orange-500">{canjesPendientes.length}</p>
           <p className="text-sm font-bold text-gray-400">
-            {canjesPendientes.length > 0 ? 'Revisar en Puntos' : 'Todo al día'}
+            {canjesPendientes.length > 0 ? 'Toca para revisar 👉' : 'Todo al día'}
           </p>
         </Card>
         <Card className="text-center">

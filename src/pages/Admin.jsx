@@ -42,6 +42,30 @@ export default function Admin() {
         <p className="text-gray-500 font-bold">Selecciona un comportamiento</p>
       </div>
 
+      {/* Canjes pendientes de aprobación — primero, para que no se pierda con la lista de comportamientos */}
+      {canjesPendientes.length > 0 && (
+        <Card className="bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
+          <h3 className="font-bold text-gray-700 mb-2">✅ Canjes por aprobar</h3>
+          <div className="space-y-2">
+            {canjesPendientes.map((canje) => (
+              <div key={canje.id} className="flex items-center gap-2 bg-white rounded-xl px-3 py-2 shadow-sm">
+                <span className="text-2xl">{canje.beneficio.icono}</span>
+                <div className="flex-1">
+                  <p className="font-bold text-gray-600 text-sm">{canje.beneficio.nombre}</p>
+                  <p className="text-xs text-gray-400">{canje.beneficio.costo} puntos</p>
+                </div>
+                <Button size="sm" variant="success" onClick={() => aprobarCanje(canje.id)}>
+                  ✅
+                </Button>
+                <Button size="sm" variant="danger" onClick={() => rechazarCanje(canje.id)}>
+                  ❌
+                </Button>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
       {/* Nuevo comportamiento */}
       <Card className="space-y-3">
         <h3 className="font-bold text-gray-700">➕ Nuevo comportamiento</h3>
@@ -164,30 +188,6 @@ export default function Admin() {
           </Card>
         ))}
       </div>
-
-      {/* Canjes pendientes de aprobación */}
-      {canjesPendientes.length > 0 && (
-        <Card className="bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
-          <h3 className="font-bold text-gray-700 mb-2">✅ Canjes por aprobar</h3>
-          <div className="space-y-2">
-            {canjesPendientes.map((canje) => (
-              <div key={canje.id} className="flex items-center gap-2 bg-white rounded-xl px-3 py-2 shadow-sm">
-                <span className="text-2xl">{canje.beneficio.icono}</span>
-                <div className="flex-1">
-                  <p className="font-bold text-gray-600 text-sm">{canje.beneficio.nombre}</p>
-                  <p className="text-xs text-gray-400">{canje.beneficio.costo} puntos</p>
-                </div>
-                <Button size="sm" variant="success" onClick={() => aprobarCanje(canje.id)}>
-                  ✅
-                </Button>
-                <Button size="sm" variant="danger" onClick={() => rechazarCanje(canje.id)}>
-                  ❌
-                </Button>
-              </div>
-            ))}
-          </div>
-        </Card>
-      )}
 
       {/* Historial de transacciones */}
       {historial.length > 0 && (
