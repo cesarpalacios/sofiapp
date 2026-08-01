@@ -18,8 +18,8 @@
 │        Supabase Cloud           │
 │  Postgres DB + Auth + Storage   │
 ├─────────────────────────────────┤
-│          AWS Hosting            │
-│   (dominio de Cesar)            │
+│         GitHub Pages            │
+│   (gratis, deploy automático)   │
 └─────────────────────────────────┘
 ```
 
@@ -40,10 +40,12 @@
 Ver [`supabase/schema.sql`](../supabase/schema.sql) — por ahora solo documenta el modelo de datos objetivo para esa migración.
 
 ### 3. Hosting
-- **AWS** (EC2, Amplify, o S3+CloudFront según preferencia)
-- **Dominio:** subdominio de Cesar (ej: `sofia.ceapalaciosal.it`)
-- **HTTPS:** obligatorio (Let's Encrypt o el certificado de AWS)
-- **CI/CD:** GitHub Actions → build → deploy automático
+- **GitHub Pages** — gratis, sin servidores que mantener; alcanza de sobra para el tráfico de una app familiar
+- **Dominio:** `https://<usuario>.github.io/sofiapp/` (se puede apuntar un dominio propio después con un `CNAME` si se quiere)
+- **HTTPS:** automático, GitHub Pages lo provee sin configuración
+- **CI/CD:** GitHub Actions ([`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml)) — lint + test + build + deploy en cada push a `main`
+
+> AWS queda como opción futura si el proyecto crece más allá de lo que Pages puede ofrecer (por ahora es innecesario y tiene costo).
 
 ---
 

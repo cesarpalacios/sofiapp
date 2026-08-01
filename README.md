@@ -18,7 +18,7 @@ App de puntos para Sofia (niños 4+) — gana puntos por buen comportamiento y c
 | Styling | Tailwind CSS v4 |
 | Backend | Local (localStorage) — Supabase reservado para el futuro |
 | PWA | vite-plugin-pwa |
-| Deploy | AWS (dominio propio) |
+| Deploy | GitHub Pages (gratis, automático vía GitHub Actions) |
 
 ## 🚀 Empezar
 
@@ -49,6 +49,19 @@ npm run preview
 ## 🔐 Autenticación
 
 El login es 100% local (sin backend): la primera vez que alguien entra como "Papá o Mamá", la app pide crear un usuario, contraseña y parentesco (Papá, Mamá, Abuelo, Abuela, Tío, Tía, Otro) — quedan guardados (hasheados) en este dispositivo. Desde **⚙️ Configuración → Usuarios de la familia** se pueden agregar más admins (cualquier familiar), editarlos o eliminarlos. El niño/a entra con un PIN de 4 dígitos (`0000` por defecto hasta que lo cambies), y su nombre/avatar también se personalizan desde Configuración.
+
+## 🚀 Deploy (GitHub Pages)
+
+Cada push a `main` corre lint + tests + build y publica automáticamente en GitHub Pages ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)) — sin servidores ni costo.
+
+**Configuración inicial (una sola vez, desde github.com):**
+1. Ve a **Settings → Pages** en el repo.
+2. En **Source**, elige **"GitHub Actions"** (no "Deploy from a branch").
+3. Haz push a `main` (o corre el workflow manualmente desde la pestaña **Actions**) — el sitio queda en `https://<tu-usuario>.github.io/sofiapp/`.
+
+> El `base` de Vite ya está configurado como `/sofiapp/` para producción (ver `vite.config.js`) — si algún día cambias el nombre del repo, actualiza ese valor también.
+
+Para instalarla como app en el celular: abre esa URL en Chrome/Safari y usa "Agregar a pantalla de inicio" — no requiere Play Store ni App Store.
 
 ## 📁 Estructura
 
@@ -102,4 +115,15 @@ sofiapp/
 
 ## 📄 Licencia
 
-Proyecto privado — Familia Palacios 👨‍👩‍👧
+[![CC BY-NC-SA 4.0](https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+**CC BY-NC-SA 4.0** — Creative Commons Atribución-NoComercial-CompartirIgual. En corto:
+
+- ✅ Puedes usar, copiar y modificar el código libremente
+- ✅ Si lo modificas o creas algo a partir de él, debes compartirlo con la misma licencia (código abierto)
+- ✅ Debes dar crédito al proyecto original
+- ❌ No puedes venderlo ni usarlo (ni tus variantes) con fines comerciales
+
+Ver el archivo [`LICENSE`](LICENSE) para el texto completo.
+
+Creado originalmente para la familia Palacios 👨‍👩‍👧 — pensado para que cualquier familia lo adapte a sus propios hijos.
