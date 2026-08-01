@@ -28,7 +28,11 @@ export default function App() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-5xl animate-bounce">🌟</div>
+        <img
+          src={`${import.meta.env.BASE_URL}sofi-icon.svg`}
+          alt="SofiApp"
+          className="w-16 h-16 animate-bounce"
+        />
       </div>
     )
   }

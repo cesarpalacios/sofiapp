@@ -84,7 +84,11 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md w-full space-y-6">
         <div className="text-center">
-          <div className="text-7xl mb-3 animate-bounce-slow">🌟</div>
+          <img
+            src={`${import.meta.env.BASE_URL}sofi-icon.svg`}
+            alt="SofiApp"
+            className="w-24 h-24 mx-auto mb-3 animate-bounce-slow drop-shadow-lg"
+          />
           <h1 className="text-4xl font-bold text-purple-600 text-shadow-fun">SofiApp</h1>
           <p className="text-gray-500 font-bold mt-1">¡Gana puntos y diviértete!</p>
         </div>
