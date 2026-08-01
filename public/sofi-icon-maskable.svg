@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="55%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="star" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#fff6d9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Fondo a sangre completa: Android recorta el ícono con su propia máscara -->
+  <rect x="0" y="0" width="100" height="100" fill="url(#bg)"/>
+
+  <!-- Estrella centrada y dimensionada dentro de la "zona segura" (~66% del diámetro) -->
+  <path d="M 50.0,23.0 L 56.61,40.9 L 75.68,41.66 L 60.7,53.48 L 65.87,71.84 L 50.0,61.25 L 34.13,71.84 L 39.3,53.48 L 24.32,41.66 L 43.39,40.9 Z"
+        fill="url(#star)" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round"/>
+</svg>
